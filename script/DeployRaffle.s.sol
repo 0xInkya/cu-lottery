@@ -2,9 +2,13 @@
 
 pragma solidity ^0.8.18;
 
-import {Script} from "forge-std/Script.sol";
+import {Script, console2} from "forge-std/Script.sol";
 import {HelperConfig} from "script/HelperConfig.s.sol";
-import {CreateVRFSubscription, FundVRFSubscription} from "script/VRFSubscriptionManager.s.sol";
+import {
+    CreateVRFSubscription,
+    FundVRFSubscription,
+    AddConsumerToVRFSubscription
+} from "script/VRFSubscriptionManager.s.sol";
 import {Raffle} from "src/Raffle.sol";
 
 contract DeployRaffle is Script {
@@ -21,11 +25,11 @@ contract DeployRaffle is Script {
 
             /* Create subscription */
             CreateVRFSubscription createVRFSubscription = new CreateVRFSubscription();
-            (config.subId,) = createVRFSubscription.run();
+            config.subId = createVRFSubscription.run(config);
 
             /* Fund subscription */
             FundVRFSubscription fundVRFSubscription = new FundVRFSubscription();
-            fundVRFSubscription.run();
+            fundVRFSubscription.run(config);
         }
 
         vm.startBroadcast();
@@ -34,7 +38,12 @@ contract DeployRaffle is Script {
         );
         vm.stopBroadcast();
 
-        // ADD CONSUMER
+        /**
+         * Again, here we are calling the run function because theres no need to input parameters into the addConsumerToVRFSubscription
+         * when they are already in that contract
+         */
+        AddConsumerToVRFSubscription addConsumer = new AddConsumerToVRFSubscription();
+        addConsumer.run(config, address(raffle));
 
         return raffle;
     }

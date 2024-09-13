@@ -35,14 +35,14 @@ contract HelperConfig is Script, Constants {
     mapping(uint256 chainId => NetworkConfig) public networkConfigs;
 
     struct NetworkConfig {
-        // VRF
+        /* Chainlink VRF */
         address vrfCoordinatorV2_5;
         bytes32 keyHash;
         uint256 subId;
         uint32 callbackGasLimit;
-        // Automation
+        /* Chainlink Automation */
         uint256 interval;
-        // Other
+        /* Other */
         address linkToken;
         address signer;
     }
@@ -69,7 +69,7 @@ contract HelperConfig is Script, Constants {
         return NetworkConfig({
             vrfCoordinatorV2_5: 0xD7f86b4b8Cae7D942340FF628F82735b7a20893a,
             keyHash: 0x8077df514608a09f83e4e8d300645594e5d7234665448ba83f51a50f842bd3d9, // 200 gwei Key Hash
-            subId: 0, // change this
+            subId: 0, // set in deploy script
             callbackGasLimit: 500000, // 500,000 gas
             interval: 30, // 30 seconds
             linkToken: 0x514910771AF9Ca656af840dff83E8264EcF986CA,
@@ -81,7 +81,7 @@ contract HelperConfig is Script, Constants {
         return NetworkConfig({
             vrfCoordinatorV2_5: 0x9DdfaCa8183c41ad55329BdeeD9F6A8d53168B1B,
             keyHash: 0x787d74caea10b2b357790d5b5247c2f63d1d91572a9846f780606e4d953677ae, // 100 gwei Key Hash
-            subId: 0, // change this
+            subId: 0, // set in deploy script
             callbackGasLimit: 500000, // 500,000 gas
             interval: 30, // 30 seconds
             linkToken: 0x779877A7B0D9E8603169DdbD7836e478b4624789,
@@ -102,8 +102,8 @@ contract HelperConfig is Script, Constants {
 
         return NetworkConfig({
             vrfCoordinatorV2_5: address(vrfCoordinatorV2_5Mock),
-            keyHash: 0x787d74caea10b2b357790d5b5247c2f63d1d91572a9846f780606e4d953677ae, // 100 gwei Key Hash
-            subId: 0, // change this
+            keyHash: 0x787d74caea10b2b357790d5b5247c2f63d1d91572a9846f780606e4d953677ae, // doesnt matter on Anvil
+            subId: 0, // set in deploy script
             callbackGasLimit: 500000, // 500,000 gas
             interval: 30, // 30 seconds
             linkToken: address(mockLinkToken),
