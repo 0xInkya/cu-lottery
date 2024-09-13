@@ -21,6 +21,8 @@ abstract contract Constants {
     uint96 MOCK_BASE_FEE = 0.25 ether;
     uint96 MOCK_GAS_PRICE = 1e9;
     int256 MOCK_WEI_PER_UNIT_LINK = 4e15;
+
+    uint256 FUND_AMOUNT = 3 ether;
 }
 
 contract HelperConfig is Script, Constants {
@@ -63,7 +65,7 @@ contract HelperConfig is Script, Constants {
         else revert HelperConfig__ChainNotFound();
     }
 
-    function getMainnetConfig() public returns (NetworkConfig memory) {
+    function getMainnetConfig() public pure returns (NetworkConfig memory) {
         return NetworkConfig({
             vrfCoordinatorV2_5: 0xD7f86b4b8Cae7D942340FF628F82735b7a20893a,
             keyHash: 0x8077df514608a09f83e4e8d300645594e5d7234665448ba83f51a50f842bd3d9, // 200 gwei Key Hash
@@ -75,7 +77,7 @@ contract HelperConfig is Script, Constants {
         });
     }
 
-    function getSepoliaConfig() public returns (NetworkConfig memory) {
+    function getSepoliaConfig() public pure returns (NetworkConfig memory) {
         return NetworkConfig({
             vrfCoordinatorV2_5: 0x9DdfaCa8183c41ad55329BdeeD9F6A8d53168B1B,
             keyHash: 0x787d74caea10b2b357790d5b5247c2f63d1d91572a9846f780606e4d953677ae, // 100 gwei Key Hash
