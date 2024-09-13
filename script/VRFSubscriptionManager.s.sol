@@ -65,13 +65,19 @@ contract FundVRFSubscription is Script, Constants {
 }
 
 contract AddConsumerToVRFSubscription is Script, Constants {
-    function addConsumerToVRFSubscriptionUsingConfig(HelperConfig.NetworkConfig memory config, address mostRecentDeployment) public {
+    function addConsumerToVRFSubscriptionUsingConfig(
+        HelperConfig.NetworkConfig memory config,
+        address mostRecentDeployment
+    ) public {
         addConsumerToVRFSubscription(config.vrfCoordinatorV2_5, config.subId, config.signer, mostRecentDeployment);
     }
 
-    function addConsumerToVRFSubscription(address vrfCoordinatorV2_5, uint256 subId, address signer, address mostRecentDeployment)
-        public
-    {
+    function addConsumerToVRFSubscription(
+        address vrfCoordinatorV2_5,
+        uint256 subId,
+        address signer,
+        address mostRecentDeployment
+    ) public {
         console2.log("Adding consumer contract: ", mostRecentDeployment);
         console2.log("To vrfCoordinator: ", vrfCoordinatorV2_5);
         console2.log("On ChainId: ", block.chainid);

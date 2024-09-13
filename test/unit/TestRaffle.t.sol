@@ -18,7 +18,6 @@ contract TestRaffle is Test, Constants {
         vm.deal(PLAYER, 10 ether);
     }
 
-
     function testRaffleStateDefaultsToOpen() external view {
         assert(raffle.getRaffleState() == Raffle.RaffleState.OPEN);
     }
