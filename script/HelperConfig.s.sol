@@ -11,6 +11,7 @@ import {MockLinkToken} from "@chainlink/contracts/v0.8/mocks/MockLinkToken.sol";
 
 abstract contract Constants {
     address DEFAULT_ANVIL_SIGNER = 0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266;
+    uint256 VRF_SUBSCRIPTION_FUND_AMOUNT = 3 ether;
 
     /* Chain IDs */
     uint256 ANVIL_CHAIN_ID = 31337;
@@ -21,8 +22,6 @@ abstract contract Constants {
     uint96 MOCK_BASE_FEE = 0.25 ether;
     uint96 MOCK_GAS_PRICE = 1e9;
     int256 MOCK_WEI_PER_UNIT_LINK = 4e15;
-
-    uint256 VRF_SUBSCRIPTION_FUND_AMOUNT = 3 ether;
 }
 
 contract HelperConfig is Script, Constants {
