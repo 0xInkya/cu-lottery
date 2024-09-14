@@ -34,6 +34,11 @@ jobs:
           forge fmt --check
         id: fmt
 
+      - name: Run make install
+        run: | 
+          make install
+        id: install
+
       - name: Run Forge build
         run: |
           forge build --sizes

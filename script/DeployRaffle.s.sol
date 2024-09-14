@@ -12,7 +12,7 @@ import {
 import {Raffle} from "src/Raffle.sol";
 
 contract DeployRaffle is Script {
-    function run() external returns (Raffle) {
+    function run() external returns (Raffle, HelperConfig) {
         HelperConfig helperConfig = new HelperConfig();
         HelperConfig.NetworkConfig memory config = helperConfig.getConfig();
 
@@ -45,6 +45,6 @@ contract DeployRaffle is Script {
         AddConsumerToVRFSubscription addConsumer = new AddConsumerToVRFSubscription();
         addConsumer.run(config, address(raffle));
 
-        return raffle;
+        return (raffle, helperConfig);
     }
 }

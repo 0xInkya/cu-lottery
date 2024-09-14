@@ -169,6 +169,14 @@ contract Raffle is AutomationCompatibleInterface, VRFConsumerBaseV2Plus {
         emit Raffle__WinnerPayoutAndRaffleReset(s_mostRecentWinner, prize);
     }
 
+    receive() external payable {
+        enter();
+    }
+
+    fallback() external payable {
+        enter();
+    }
+
     /*//////////////////////////////////////////////////////////////
                                 GETTERS
     //////////////////////////////////////////////////////////////*/

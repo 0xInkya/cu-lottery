@@ -50,11 +50,11 @@ contract FundVRFSubscription is Script, Constants {
         // ??
         if (block.chainid == ANVIL_CHAIN_ID) {
             vm.startBroadcast();
-            VRFCoordinatorV2_5Mock(vrfCoordinatorV2_5).fundSubscription(subId, FUND_AMOUNT * 100);
+            VRFCoordinatorV2_5Mock(vrfCoordinatorV2_5).fundSubscription(subId, VRF_SUBSCRIPTION_FUND_AMOUNT * 100);
             vm.stopBroadcast();
         } else {
             vm.startBroadcast(signer);
-            MockLinkToken(linkToken).transferAndCall(vrfCoordinatorV2_5, FUND_AMOUNT, abi.encode(subId));
+            MockLinkToken(linkToken).transferAndCall(vrfCoordinatorV2_5, VRF_SUBSCRIPTION_FUND_AMOUNT, abi.encode(subId));
             vm.stopBroadcast();
         }
     }
