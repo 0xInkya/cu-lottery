@@ -54,7 +54,9 @@ contract FundVRFSubscription is Script, Constants {
             vm.stopBroadcast();
         } else {
             vm.startBroadcast(signer);
-            MockLinkToken(linkToken).transferAndCall(vrfCoordinatorV2_5, VRF_SUBSCRIPTION_FUND_AMOUNT, abi.encode(subId));
+            MockLinkToken(linkToken).transferAndCall(
+                vrfCoordinatorV2_5, VRF_SUBSCRIPTION_FUND_AMOUNT, abi.encode(subId)
+            );
             vm.stopBroadcast();
         }
     }
