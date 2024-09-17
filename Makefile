@@ -16,7 +16,8 @@ remove :; rm -rf .gitmodules && rm -rf .git/modules/* && rm -rf lib && touch .gi
 install :
 	forge install foundry-rs/forge-std --no-commit && \
 	forge install smartcontractkit/chainlink-brownie-contracts --no-commit && \
-	forge install Cyfrin/foundry-devops --no-commit
+	forge install Cyfrin/foundry-devops --no-commit && \
+	forge install transmissions11/solmate --no-commit
 
 # Update Dependencies
 update:; forge update
@@ -32,19 +33,13 @@ format :; forge fmt
 anvil :; anvil -m 'test test test test test test test test test test test junk' --steps-tracing --block-time 1
 
 deploy:
-	@forge script script/DeployFundMe.s.sol:DeployFundMe $(NETWORK_ARGS)
+	@forge script script/DeployRaffle.s.sol:DeployRaffle $(NETWORK_ARGS)
 
-NETWORK_ARGS := --rpc-url http://localhost:8545 --private-key $(DEFAULT_ANVIL_KEY) --broadcast
+NETWORK_ARGS := --rpc-url http://localhost:8545 --private-key $(DEFAULT_ANVIL_KEY) --broadcast -vvvv
 
 ifeq ($(findstring --network sepolia,$(ARGS)),--network sepolia)
 	NETWORK_ARGS := --rpc-url $(SEPOLIA_RPC_URL) --account $(ACCOUNT) --broadcast --verify --etherscan-api-key $(ETHERSCAN_API_KEY) -vvvv
 endif
 
-deploy-sepolia:
-	@forge script script/DeployFundMe.s.sol:DeployFundMe $(NETWORK_ARGS)
-
 # Address of the function caller goes here. Just put in $(DEFAULT_ANVIL_KEY) or $(SEPOLIA_ADDRESS)
 SENDER_ADDRESS := $(SEPOLIA_ADDRESS)
- 
-enter:
-	@forge script script/Interactions.s.sol:FundFundMe --sender $(SENDER_ADDRESS) $(NETWORK_ARGS)
