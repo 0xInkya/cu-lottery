@@ -13,11 +13,11 @@ contract CreateSubscription is Script {
     function createSubscriptionUsingConfig() public returns (uint256, address) {
         HelperConfig helperConfig = new HelperConfig();
         address vrfCoordinatorV2_5 = helperConfig.getConfigByChainId(block.chainid).vrfCoordinatorV2_5;
-        address signer = helperConfig.getConfigByChainId(block.chainid).signer;
+        uint256 signer = helperConfig.getConfigByChainId(block.chainid).signer;
         return createSubscription(vrfCoordinatorV2_5, signer);
     }
 
-    function createSubscription(address vrfCoordinatorV2_5, address signer) public returns (uint256, address) {
+    function createSubscription(address vrfCoordinatorV2_5, uint256 signer) public returns (uint256, address) {
         console2.log("Creating subscription on chainId: ", block.chainid);
         vm.startBroadcast(signer);
         uint256 subId = VRFCoordinatorV2_5Mock(vrfCoordinatorV2_5).createSubscription();
@@ -37,12 +37,12 @@ contract AddConsumer is Script {
         HelperConfig helperConfig = new HelperConfig();
         uint256 subId = helperConfig.getConfig().subId;
         address vrfCoordinatorV2_5 = helperConfig.getConfig().vrfCoordinatorV2_5;
-        address signer = helperConfig.getConfig().signer;
+        uint256 signer = helperConfig.getConfig().signer;
 
         addConsumer(mostRecentlyDeployed, vrfCoordinatorV2_5, subId, signer);
     }
 
-    function addConsumer(address contractToAddToVrf, address vrfCoordinator, uint256 subId, address signer) public {
+    function addConsumer(address contractToAddToVrf, address vrfCoordinator, uint256 subId, uint256 signer) public {
         console2.log("Adding consumer contract: ", contractToAddToVrf);
         console2.log("Using vrfCoordinator: ", vrfCoordinator);
         console2.log("On ChainID: ", block.chainid);
@@ -66,7 +66,7 @@ contract FundSubscription is Script, Constants {
         uint256 subId = helperConfig.getConfig().subId;
         address vrfCoordinatorV2_5 = helperConfig.getConfig().vrfCoordinatorV2_5;
         address link = helperConfig.getConfig().linkToken;
-        address signer = helperConfig.getConfig().signer;
+        uint256 signer = helperConfig.getConfig().signer;
 
         if (subId == 0) {
             CreateSubscription createSub = new CreateSubscription();
@@ -79,7 +79,7 @@ contract FundSubscription is Script, Constants {
         fundSubscription(vrfCoordinatorV2_5, subId, link, signer);
     }
 
-    function fundSubscription(address vrfCoordinatorV2_5, uint256 subId, address link, address signer) public {
+    function fundSubscription(address vrfCoordinatorV2_5, uint256 subId, address link, uint256 signer) public {
         console2.log("Funding subscription: ", subId);
         console2.log("Using vrfCoordinator: ", vrfCoordinatorV2_5);
         console2.log("On ChainID: ", block.chainid);

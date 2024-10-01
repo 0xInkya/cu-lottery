@@ -1,0 +1,4 @@
+Changed line 349 of SubscriptionAPI.sol (used in VRFCoordinator) from
+```keccak256(abi.encodePacked(msg.sender, blockhash(block.number - 1), address(this), currentSubNonce))```
+to
+```keccak256(abi.encodePacked(msg.sender, blockhash(block.number), address(this), currentSubNonce))```

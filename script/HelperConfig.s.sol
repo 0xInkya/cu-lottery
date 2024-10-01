@@ -8,7 +8,7 @@ import {VRFCoordinatorV2_5Mock} from "@chainlink/contracts/v0.8/vrf/mocks/VRFCoo
 import {MockLinkToken} from "@chainlink/contracts/v0.8/mocks/MockLinkToken.sol";
 
 abstract contract Constants {
-    address DEFAULT_ANVIL_SIGNER = 0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266;
+    uint256 DEFAULT_ANVIL_SIGNER = 0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80;
     uint256 VRF_SUBSCRIPTION_FUND_AMOUNT = 3 ether;
 
     /* Chain IDs */
@@ -38,7 +38,7 @@ contract HelperConfig is Script, Constants {
         uint256 interval;
         /* Other */
         address linkToken;
-        address signer;
+        uint256 signer;
     }
 
     constructor() {
@@ -66,6 +66,11 @@ contract HelperConfig is Script, Constants {
         VRFCoordinatorV2_5Mock vrfCoordinatorV2_5Mock =
             new VRFCoordinatorV2_5Mock(MOCK_BASE_FEE, MOCK_GAS_PRICE, MOCK_WEI_PER_UNIT_LINK);
         MockLinkToken mockLinkToken = new MockLinkToken();
+        vm.roll(block.number + 1);
+        vm.deal(DEFAULT_ANVIL_SIGNER, VRF_SUBSCRIPTION_FUND_AMOUNT);
+        uint256 subId = vrfCoordinatorV2_5Mock.createSubscription();
+        vrfCoordinatorV2_5Mock.addConsumer(subId, address(vrfCoordinatorV2_5Mock));
+        vrfCoordinatorV2_5Mock.fundSubscription(subId, VRF_SUBSCRIPTION_FUND_AMOUNT);
         vm.stopBroadcast();
 
         anvilNetworkConfig = NetworkConfig({
@@ -89,7 +94,7 @@ contract HelperConfig is Script, Constants {
             callbackGasLimit: 500000, // 500,000 gas
             interval: 30, // 30 seconds
             linkToken: 0x779877A7B0D9E8603169DdbD7836e478b4624789,
-            signer: msg.sender
+            signer: vm.envUint("DEFAULT_ANVIL_SIGNER")
         });
     }
 
@@ -101,7 +106,7 @@ contract HelperConfig is Script, Constants {
             callbackGasLimit: 500000, // 500,000 gas
             interval: 30, // 30 seconds
             linkToken: 0x514910771AF9Ca656af840dff83E8264EcF986CA,
-            signer: msg.sender
+            signer: vm.envUint("DEFAULT_ANVIL_SIGNER")
         });
     }
 }
