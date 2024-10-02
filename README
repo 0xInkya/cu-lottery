@@ -6,10 +6,10 @@ This is a reimplementation of Cyfrin Updraft's [Lottery](https://github.com/Cyfr
 
 - Changed line 349 of chainlink-brownie-contracts SubscriptionAPI.sol (used in VRFCoordinator) from
     ```solidity
-    keccak256(abi.encodePacked(msg.sender, blockhash(block.number - 1), address(this), currentSubNonce))
+    keccak256(abi.encodePacked(msg.sender, blockhash(block.number - 1), address(this), s_currentSubNonce))
     ```
     to
     ```solidity
-    keccak256(abi.encodePacked(msg.sender, blockhash(block.number), address(this), currentSubNonce))
+    keccak256(abi.encodePacked(msg.sender, blockhash(block.number), address(this), s_currentSubNonce))
     ```
 
