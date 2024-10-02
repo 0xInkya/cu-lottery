@@ -61,14 +61,14 @@ contract HelperConfig is Script, Constants {
         if (anvilNetworkConfig.vrfCoordinatorV2_5 != address(0)) return anvilNetworkConfig;
 
         /* Create */
-        vm.startBroadcast();
+        vm.startBroadcast(DEFAULT_ANVIL_ADDRESS);
         VRFCoordinatorV2_5Mock vrfCoordinatorV2_5Mock =
             new VRFCoordinatorV2_5Mock(MOCK_BASE_FEE, MOCK_GAS_PRICE, MOCK_WEI_PER_UNIT_LINK);
         MockLinkToken mockLinkToken = new MockLinkToken();
-        vm.deal(DEFAULT_ANVIL_ADDRESS, VRF_SUBSCRIPTION_FUND_AMOUNT);
-        uint256 subId = vrfCoordinatorV2_5Mock.createSubscription();
-        vrfCoordinatorV2_5Mock.addConsumer(subId, address(vrfCoordinatorV2_5Mock));
-        vrfCoordinatorV2_5Mock.fundSubscription(subId, VRF_SUBSCRIPTION_FUND_AMOUNT);
+        // vm.deal(DEFAULT_ANVIL_ADDRESS, VRF_SUBSCRIPTION_FUND_AMOUNT);
+        // uint256 subId = vrfCoordinatorV2_5Mock.createSubscription();
+        // vrfCoordinatorV2_5Mock.addConsumer(subId, address(vrfCoordinatorV2_5Mock));
+        // vrfCoordinatorV2_5Mock.fundSubscription(subId, VRF_SUBSCRIPTION_FUND_AMOUNT);
         vm.stopBroadcast();
 
         anvilNetworkConfig = NetworkConfig({
