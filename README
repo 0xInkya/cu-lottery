@@ -1,4 +1,15 @@
-Changed line 349 of SubscriptionAPI.sol (used in VRFCoordinator) from
-```keccak256(abi.encodePacked(msg.sender, blockhash(block.number - 1), address(this), currentSubNonce))```
-to
-```keccak256(abi.encodePacked(msg.sender, blockhash(block.number), address(this), currentSubNonce))```
+# Raffle
+This is a reimplementation of Cyfrin Updraft's [Lottery](https://github.com/Cyfrin/foundry-smart-contract-lottery-cu) contract. This repo is for learning purposes. It contains my own notes and I have organized the code to make it more understandable to study.
+
+## Main Changes
+- Create the VRF subscription through the [Chainlink VRF UI](https://vrf.chain.link/). The Foundry simulation fails if you try to create it programatically.
+
+- Changed line 349 of chainlink-brownie-contracts SubscriptionAPI.sol (used in VRFCoordinator) from
+    ```solidity
+    keccak256(abi.encodePacked(msg.sender, blockhash(block.number - 1), address(this), currentSubNonce))
+    ```
+    to
+    ```solidity
+    keccak256(abi.encodePacked(msg.sender, blockhash(block.number), address(this), currentSubNonce))
+    ```
+

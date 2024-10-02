@@ -8,8 +8,8 @@ import {VRFCoordinatorV2_5Mock} from "@chainlink/contracts/v0.8/vrf/mocks/VRFCoo
 import {MockLinkToken} from "@chainlink/contracts/v0.8/mocks/MockLinkToken.sol";
 
 abstract contract Constants {
-    uint256 DEFAULT_ANVIL_SIGNER = 0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80;
-    uint256 VRF_SUBSCRIPTION_FUND_AMOUNT = 3 ether;
+    address DEFAULT_ANVIL_ADDRESS = 0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266;
+    uint256 VRF_SUBSCRIPTION_FUND_AMOUNT = 0.01 ether;
 
     /* Chain IDs */
     uint256 ANVIL_CHAIN_ID = 31337;
@@ -38,7 +38,7 @@ contract HelperConfig is Script, Constants {
         uint256 interval;
         /* Other */
         address linkToken;
-        uint256 signer;
+        address signer;
     }
 
     constructor() {
@@ -46,7 +46,6 @@ contract HelperConfig is Script, Constants {
         networkConfigs[MAINNET_CHAIN_ID] = getMainnetConfig();
     }
 
-    // I don't really understand why getConfig and getConfigByChainId are two different functions
     function getConfig() public returns (NetworkConfig memory) {
         return getConfigByChainId(block.chainid);
     }
@@ -62,27 +61,25 @@ contract HelperConfig is Script, Constants {
         if (anvilNetworkConfig.vrfCoordinatorV2_5 != address(0)) return anvilNetworkConfig;
 
         /* Create */
-        vm.startBroadcast(DEFAULT_ANVIL_SIGNER);
+        vm.startBroadcast();
         VRFCoordinatorV2_5Mock vrfCoordinatorV2_5Mock =
             new VRFCoordinatorV2_5Mock(MOCK_BASE_FEE, MOCK_GAS_PRICE, MOCK_WEI_PER_UNIT_LINK);
         MockLinkToken mockLinkToken = new MockLinkToken();
-        vm.roll(block.number + 1);
-        vm.deal(DEFAULT_ANVIL_SIGNER, VRF_SUBSCRIPTION_FUND_AMOUNT);
-        uint256 subId = vrfCoordinatorV2_5Mock.createSubscription();
-        vrfCoordinatorV2_5Mock.addConsumer(subId, address(vrfCoordinatorV2_5Mock));
-        vrfCoordinatorV2_5Mock.fundSubscription(subId, VRF_SUBSCRIPTION_FUND_AMOUNT);
+        // vm.deal(DEFAULT_ANVIL_ADDRESS, VRF_SUBSCRIPTION_FUND_AMOUNT);
+        // uint256 subId = vrfCoordinatorV2_5Mock.createSubscription();
+        // vrfCoordinatorV2_5Mock.addConsumer(subId, address(vrfCoordinatorV2_5Mock));
+        // vrfCoordinatorV2_5Mock.fundSubscription(subId, VRF_SUBSCRIPTION_FUND_AMOUNT);
         vm.stopBroadcast();
 
         anvilNetworkConfig = NetworkConfig({
             vrfCoordinatorV2_5: address(vrfCoordinatorV2_5Mock),
             keyHash: 0x787d74caea10b2b357790d5b5247c2f63d1d91572a9846f780606e4d953677ae, // doesnt matter on Anvil
-            subId: 0, // set in deploy script
+            subId: 0, // create and/or set in deploy script
             callbackGasLimit: 500000, // 500,000 gas
             interval: 30, // 30 seconds
             linkToken: address(mockLinkToken),
-            signer: DEFAULT_ANVIL_SIGNER
+            signer: DEFAULT_ANVIL_ADDRESS
         });
-
         return anvilNetworkConfig;
     }
 
@@ -90,11 +87,11 @@ contract HelperConfig is Script, Constants {
         return NetworkConfig({
             vrfCoordinatorV2_5: 0x9DdfaCa8183c41ad55329BdeeD9F6A8d53168B1B,
             keyHash: 0x787d74caea10b2b357790d5b5247c2f63d1d91572a9846f780606e4d953677ae, // 100 gwei Key Hash
-            subId: 0, // set in deploy script
+            subId: vm.envUint("SEPOLIA_SUBSCRIPTION_ID"),
             callbackGasLimit: 500000, // 500,000 gas
             interval: 30, // 30 seconds
             linkToken: 0x779877A7B0D9E8603169DdbD7836e478b4624789,
-            signer: vm.envUint("DEFAULT_ANVIL_SIGNER")
+            signer: vm.envAddress("SEPOLIA_ADDRESS")
         });
     }
 
@@ -102,11 +99,11 @@ contract HelperConfig is Script, Constants {
         return NetworkConfig({
             vrfCoordinatorV2_5: 0xD7f86b4b8Cae7D942340FF628F82735b7a20893a,
             keyHash: 0x8077df514608a09f83e4e8d300645594e5d7234665448ba83f51a50f842bd3d9, // 200 gwei Key Hash
-            subId: 0, // set in deploy script
+            subId: 0, // replace this with vm.envUint("MAINNET_SUBSCRIPTION_ID")
             callbackGasLimit: 500000, // 500,000 gas
             interval: 30, // 30 seconds
             linkToken: 0x514910771AF9Ca656af840dff83E8264EcF986CA,
-            signer: vm.envUint("DEFAULT_ANVIL_SIGNER")
+            signer: vm.envAddress("SEPOLIA_ADDRESS")
         });
     }
 }

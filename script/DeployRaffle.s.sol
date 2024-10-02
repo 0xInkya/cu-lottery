@@ -4,7 +4,7 @@ pragma solidity ^0.8.18;
 
 import {Script, console2} from "forge-std/Script.sol";
 import {HelperConfig} from "script/HelperConfig.s.sol";
-import {CreateSubscription, FundSubscription, AddConsumer} from "script/VRFSubscriptionManager.s.sol";
+import {CreateSubscription, FundSubscription, AddConsumer} from "script/SubscriptionManagement.s.sol";
 import {Raffle} from "src/Raffle.sol";
 
 contract DeployRaffle is Script {
@@ -28,6 +28,7 @@ contract DeployRaffle is Script {
         );
         vm.stopBroadcast();
 
+        /* Add consumer */
         AddConsumer addConsumer = new AddConsumer();
         addConsumer.addConsumer(address(raffle), config.vrfCoordinatorV2_5, config.subId, config.signer);
 
