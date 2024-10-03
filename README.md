@@ -4,3 +4,12 @@ This is a reimplementation of Cyfrin Updraft's [Lottery](https://github.com/Cyfr
 Deploying to Anvil doesn't work (even though the tests pass) and I'm not sure it's fixable, because creating a subscription programatically doesn't seem to work in any chain. Deploying on Sepolia does work as long as you create a subscription through the [Chainlink VRF UI](https://vrf.chain.link/) and set the subscription ID in your HelperConfig.
 
 GitHub CI workflows fails as well because I used enviroment variables in the HelperConfig, so during the test setup there are missing values.
+
+# Installation
+```bash
+git clone https://github.com/0xInkya/cu-lottery.git
+```
+
+```Makefile
+make install
+```
