@@ -6,10 +6,12 @@ Deploying to Anvil doesn't work (even though the tests pass) and I'm not sure it
 GitHub CI workflows fails as well because I used enviroment variables in the HelperConfig, so during the test setup there are missing values.
 
 # Installation
-```bash
+Install the repo:
+```
 git clone https://github.com/0xInkya/cu-lottery.git
 ```
 
-```Makefile
+Install dependencies:
+```
 make install
 ```
