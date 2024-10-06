@@ -77,8 +77,8 @@ contract Raffle is AutomationCompatibleInterface, VRFConsumerBaseV2Plus {
     /*//////////////////////////////////////////////////////////////
                                  EVENTS
     //////////////////////////////////////////////////////////////*/
-    event Raffle__EnteredRaffle(address indexed player);
-    event Raffle__WinnerPayoutAndRaffleReset(address indexed winner, uint256 indexed prize);
+    event EnteredRaffle(address indexed player);
+    event WinnerPayoutAndRaffleReset(address indexed winner, uint256 indexed prize);
 
     /*//////////////////////////////////////////////////////////////
                                FUNCTIONS
@@ -106,7 +106,7 @@ contract Raffle is AutomationCompatibleInterface, VRFConsumerBaseV2Plus {
         if (msg.value != ENTRANCE_FEE) revert Raffle__WrongEntranceFee();
         if (s_raffleState != RaffleState.OPEN) revert Raffle__RaffleStateNotOpen();
         s_players.push(payable(msg.sender));
-        emit Raffle__EnteredRaffle(msg.sender);
+        emit EnteredRaffle(msg.sender);
     }
 
     /**
@@ -166,7 +166,7 @@ contract Raffle is AutomationCompatibleInterface, VRFConsumerBaseV2Plus {
         s_players = new address[](0);
         s_lastTimeStamp = block.timestamp;
         s_raffleState = RaffleState.OPEN;
-        emit Raffle__WinnerPayoutAndRaffleReset(s_mostRecentWinner, prize);
+        emit WinnerPayoutAndRaffleReset(s_mostRecentWinner, prize);
     }
 
     receive() external payable {
