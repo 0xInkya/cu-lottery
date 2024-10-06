@@ -40,11 +40,17 @@ jobs:
         id: install
 
       - name: Run Forge build
+        env:
+          SEPOLIA_ADDRESS: ${{ secrets.SEPOLIA_ADDRESS }}
+          SUBSCRIPTION_ID: ${{ secrets.SUBSCRIPTION_ID }}
         run: |
           forge build --sizes
         id: build
 
       - name: Run Forge tests
+        env:
+          SEPOLIA_ADDRESS: ${{ secrets.SEPOLIA_ADDRESS }}
+          SUBSCRIPTION_ID: ${{ secrets.SUBSCRIPTION_ID }}
         run: |
           forge test -vvv
         id: test
