@@ -77,14 +77,15 @@ contract TestRaffle is Test, Constants {
     function testReceiveCallsEnter() external {
         vm.expectEmit(true, false, false, false, address(raffle));
         emit Raffle.EnteredRaffle(PLAYER);
+        vm.prank(PLAYER);
         (bool success,) = address(raffle).call{value: 0.01 ether}("");
         if (!success) revert TestRaffle__CallUnsucessful();
     }
 
     function testFallbackCallstEnter() external {
-        vm.prank(PLAYER);
         vm.expectEmit(true, false, false, false, address(raffle));
         emit Raffle.EnteredRaffle(PLAYER);
+        vm.prank(PLAYER);
         (bool success,) = address(raffle).call{value: 0.01 ether}("0x12345678");
         if (!success) revert TestRaffle__CallUnsucessful();
     }
@@ -93,8 +94,8 @@ contract TestRaffle is Test, Constants {
                              PERFORM UPKEEP
     //////////////////////////////////////////////////////////////*/
     function testPerformUpkeepRevertsWithErrorIfCheckUpkeepNotNeeded() external {
-        vm.prank(PLAYER);
         vm.expectRevert(Raffle.Raffle__UpkeepNotNeeded.selector);
+        vm.prank(PLAYER);
         raffle.performUpkeep("");
     }
 }

@@ -32,17 +32,28 @@ format :; forge fmt
 
 anvil :; anvil -m 'test test test test test test test test test test test junk' --steps-tracing --block-time 1
 
+
 #/*//////////////////////////////////////////////////////////////
 #                          DEPLOYEMENT
 #//////////////////////////////////////////////////////////////*/
+
+# Deploy to Anvil
+## make anvil
+## make deploy
 deploy:
 	@forge script script/DeployRaffle.s.sol:DeployRaffle $(NETWORK_ARGS)
 
 NETWORK_ARGS := --rpc-url http://localhost:8545 --private-key $(DEFAULT_ANVIL_KEY) --broadcast -vvvv
 
+# Deploy to Sepolia
+## make deploy ARGS="--network sepolia"
 ifeq ($(findstring --network sepolia,$(ARGS)),--network sepolia)
 	NETWORK_ARGS := --rpc-url $(SEPOLIA_RPC_URL) --account $(ACCOUNT) --broadcast --verify --etherscan-api-key $(ETHERSCAN_API_KEY) -vvvv
 endif
+
+#/*//////////////////////////////////////////////////////////////
+#                          INTERACTIONS
+#//////////////////////////////////////////////////////////////*/
 
 # Address of the function caller goes here. Just put in $(DEFAULT_ANVIL_KEY) or $(SEPOLIA_ADDRESS)
 SENDER_ADDRESS := $(SEPOLIA_ADDRESS)
