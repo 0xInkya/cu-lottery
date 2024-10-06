@@ -32,6 +32,9 @@ format :; forge fmt
 
 anvil :; anvil -m 'test test test test test test test test test test test junk' --steps-tracing --block-time 1
 
+#/*//////////////////////////////////////////////////////////////
+#                          DEPLOYEMENT
+#//////////////////////////////////////////////////////////////*/
 deploy:
 	@forge script script/DeployRaffle.s.sol:DeployRaffle $(NETWORK_ARGS)
 
